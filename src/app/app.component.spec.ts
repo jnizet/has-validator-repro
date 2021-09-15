@@ -1,5 +1,6 @@
 import { TestBed } from '@angular/core/testing';
 import { AppComponent } from './app.component';
+import { ReactiveFormsModule, Validators } from '@angular/forms';
 
 describe('AppComponent', () => {
   beforeEach(async () => {
@@ -7,25 +8,16 @@ describe('AppComponent', () => {
       declarations: [
         AppComponent
       ],
+      imports: [ReactiveFormsModule]
     }).compileComponents();
   });
 
-  it('should create the app', () => {
-    const fixture = TestBed.createComponent(AppComponent);
-    const app = fixture.componentInstance;
-    expect(app).toBeTruthy();
-  });
+  it('form control check for validators', () => {
+    const component: AppComponent = TestBed.createComponent(AppComponent).componentInstance;
+    expect(component.orgIdCtrl.hasValidator(Validators.required)).toBeFalse();
 
-  it(`should have as title 'has-validator-repro'`, () => {
-    const fixture = TestBed.createComponent(AppComponent);
-    const app = fixture.componentInstance;
-    expect(app.title).toEqual('has-validator-repro');
-  });
-
-  it('should render title', () => {
-    const fixture = TestBed.createComponent(AppComponent);
-    fixture.detectChanges();
-    const compiled = fixture.nativeElement as HTMLElement;
-    expect(compiled.querySelector('.content span')?.textContent).toContain('has-validator-repro app is running!');
+    const nameCtrl = component.nameCtrl;
+    expect(nameCtrl.hasValidator(Validators.required)).toBeTruthy();
+    expect(nameCtrl.hasValidator(component.min3)).toBeTruthy();
   });
 });
